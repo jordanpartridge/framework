@@ -17,6 +17,16 @@ class SupportMessageBagTest extends TestCase
         $this->assertEquals(['bar'], $messages['foo']);
     }
 
+    public function testUniquenessDoesNotTreatNumericStringsAsEqual()
+    {
+        $container = new MessageBag;
+        $container->add('zip', '0');
+        $container->add('zip', '00');
+        $container->add('zip', '1e1');
+        $container->add('zip', '10');
+        $this->assertSame(['0', '00', '1e1', '10'], $container->get('zip'));
+    }
+
     public function testMessagesAreAdded()
     {
         $container = new MessageBag;
